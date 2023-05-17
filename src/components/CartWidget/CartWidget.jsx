@@ -1,11 +1,18 @@
+import { useContext } from "react";
 import { BsCart4 } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
 
 const CartWidget = () => {
+  const { cart } = useContext(CartContext);
+
   return (
-    <div>
-      <BsCart4 size={30} />
-      <span>0</span>
-    </div>
+    <Link to="/cart">
+      <div>
+        <span>{cart.length}</span>
+        <BsCart4 size={30} />
+      </div>
+    </Link>
   );
 };
 

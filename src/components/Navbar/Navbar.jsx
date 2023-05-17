@@ -1,9 +1,29 @@
 import CartWidget from "../CartWidget/CartWidget";
 import styles from "./Navbar.module.css";
 import { Outlet, Link, useNavigate } from "react-router-dom";
+import { dataBase } from "../../firebaseConfig";
+import { getDocs, collection } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const categoriesCollection = collection(dataBase, "categories");
+    getDocs(categoriesCollection)
+      .then((res) => {
+        let categoriesResult = res.docs.map((category) => {
+          return {
+            ...category.data(),
+            id: category.id,
+          };
+        });
+        setCategories(categoriesResult);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div>
@@ -13,11 +33,21 @@ const Navbar = () => {
           onClick={() => navigate("/")}
           alt="Logo de la tienda"
         />
-        <ul style={{ display: "flex", listStyle: "none", gap: "30px" }}>
-          <Link to="/category/camisas">Camisas</Link>
-          <Link to="/category/pantalones">Pantalones</Link>
-          <Link to="/">Toda la indumentaria</Link>
-        </ul>
+        <div
+          style={{
+            display: "flex",
+            gap: "30px",
+            alignItems: "center",
+          }}
+        >
+          {categories.map((category) => {
+            return (
+              <Link key={category.id} to={category.path}>
+                {category.title}
+              </Link>
+            );
+          })}
+        </div>
         <CartWidget />
       </div>
       <Outlet />
