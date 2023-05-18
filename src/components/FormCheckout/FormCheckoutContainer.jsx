@@ -62,12 +62,22 @@ const FormCheckoutContainer = () => {
 
   return (
     <div>
-      <FormCheckout
-        errors={errors}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-      />
+      {cart.length === 0 ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <h1>Gracias por su compra!</h1>
+        </div>
+      ) : (
+        <FormCheckout
+          errors={errors}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </div>
+
+    /*<div>
+      
+    </div>*/
   );
 };
 

@@ -3,6 +3,7 @@ import ItemList from "./ItemList";
 import { useParams } from "react-router-dom";
 import { dataBase } from "../../firebaseConfig";
 import { getDocs, collection, query, where } from "firebase/firestore";
+import FadeLoader from "react-spinners/FadeLoader";
 
 const ItemListContainer = () => {
   const [items, setItems] = useState([]);
@@ -38,7 +39,20 @@ const ItemListContainer = () => {
 
   return (
     <div>
-      <ItemList items={items} />
+      {items.length === 0 ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <FadeLoader
+            color="#fa8072"
+            height={25}
+            margin={5}
+            radius={10}
+            speedMultiplier={1}
+            width={2}
+          />
+        </div>
+      ) : (
+        <ItemList items={items} />
+      )}
     </div>
   );
 };

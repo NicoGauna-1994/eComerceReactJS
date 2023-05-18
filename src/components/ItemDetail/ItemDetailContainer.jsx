@@ -5,6 +5,7 @@ import { CartContext } from "../../context/CartContext";
 import Swal from "sweetalert2";
 import { dataBase } from "../../firebaseConfig";
 import { getDoc, collection, doc } from "firebase/firestore";
+import FadeLoader from "react-spinners/FadeLoader";
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState({});
@@ -46,11 +47,24 @@ const ItemDetailContainer = () => {
 
   return (
     <div>
-      <ItemDetail
-        product={product}
-        onAdd={onAdd}
-        cantidadTotal={cantidadTotal}
-      />
+      {!product.img ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <FadeLoader
+            color="#fa8072"
+            height={25}
+            margin={5}
+            radius={10}
+            speedMultiplier={1}
+            width={2}
+          />
+        </div>
+      ) : (
+        <ItemDetail
+          product={product}
+          onAdd={onAdd}
+          cantidadTotal={cantidadTotal}
+        />
+      )}
     </div>
   );
 };
